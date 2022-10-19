@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="static\main.css">
+  {% if title %}
+    <title>Test site - {{ title }}</title>
+  {% else %}
+    <title>Test site</title>
+  {% endif %}
+</head>
+<body>
+  <header>
+    <a class="logo" href="/"><img src="/images/test_logo.png" alt="logo"></a>
+    <h1 class="nav_center">King of Gromps</h1>
+    <a class="cta" href="#">Contact</a>
+  </header>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

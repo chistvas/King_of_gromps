@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    <p>Home page</p>
+    <div class="container">
+        <form method="POST" action="{{ url_for('search') }}" id="homepageForm" verb="search">
+            <input class="search_field" type="text" autocomplete="off" placeholder="Summoner..." name="searched"/>
+            <button class="search_button" type="submit">Search</button>
+        </form>
+    </div>
+{% endblock content %}
