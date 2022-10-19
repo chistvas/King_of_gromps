@@ -1,8 +1,10 @@
 from riotwatcher import LolWatcher
 
 
-key = "RGAPI-4204ebcd-0245-4b2f-bdfb-67f6effc93cd"
+key = "RGAPI-d217200c-485c-4b09-b861-b8df9cbc2b0a"
 kda = ["kills", "deaths", "assists"]
+table_stats = ["championName", "win"]
+
 
 def my_timer(orig_func):
     import time
@@ -72,17 +74,32 @@ def get_all_players_list_stats(region_name, match_id, list_stats):
     return all_player_stats
 
 
+def collapsed_table_info(player1, player2, region):
+    # data = {Match: { champ_id_p1:senna ; victory:0/1 ; kda_p1:1/2/3 ; items:[0,1,2,3,4,5] ; enemys: [0..8]}}
+    watcher = LolWatcher(key)
+    player1_puuid = watcher.summoner.by_name(region, player1)["puuid"]
+    table_info = {}
+    enemys_list = []
+    for match in two_players_search(player1, player2, region):
+        for match_id in match:
+            player1_stats = get_player_all_stats(match_id, region, player1_puuid)
+            info = get_player_list_stats(player1_stats, table_stats)
+            info["kda"] = [player1_stats["kills"], player1_stats["deaths"], player1_stats["assists"]]
+            for participant in watcher.match.by_id(region, match_id)["metadata"]["participants"]:
+                enemys_list.append(watcher.summoner.by_puuid(region, participant)["name"])
+            info["enemys"] = enemys_list
+            table_info[match_id] = info
+    return table_info
+
 
 
 if __name__ == "__main__":
     print("Script started")
+    watcher = LolWatcher(key)
     match_id2 = "EUW1_6101420783"
     puuid1 = "-Mv1lSgoxtGzZWIiEerb3xQMJ3BtBVvjjs1fgdD42G5Hlp7q2dGD3T1zs0kKodesY0bylrAbDKdfTQ"
     region = "euw1"
     player1 = "metalonot"
     player2 = "Karini"
     all_info = {}
-    for match in two_players_search(player1, player2, region):
-        for match_id in match:
-            all_info[match_id] = get_all_players_list_stats(region, match_id, kda)
-    print(all_info)
+    print(collapsed_table_info(player1, player2, region))
