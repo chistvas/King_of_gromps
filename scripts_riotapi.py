@@ -79,12 +79,13 @@ def collapsed_table_info(player1, player2, region):
     watcher = LolWatcher(key)
     player1_puuid = watcher.summoner.by_name(region, player1)["puuid"]
     table_info = {}
-    enemys_list = []
     for match in two_players_search(player1, player2, region):
         for match_id in match:
             player1_stats = get_player_all_stats(match_id, region, player1_puuid)
             info = get_player_list_stats(player1_stats, table_stats)
             info["kda"] = [player1_stats["kills"], player1_stats["deaths"], player1_stats["assists"]]
+            info["items"] = [player1_stats["item0"], player1_stats["item1"], player1_stats["item2"], player1_stats["item3"], player1_stats["item4"], player1_stats["item5"]]
+            enemys_list = []
             for participant in watcher.match.by_id(region, match_id)["metadata"]["participants"]:
                 enemys_list.append(watcher.summoner.by_puuid(region, participant)["name"])
             info["enemys"] = enemys_list
