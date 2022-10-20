@@ -17,9 +17,9 @@ def search_result():
         all_info = {}
         for match in two_players_search(player1, player2, region):
             for match_id in match:
-                all_info[match_id] = get_all_players_list_stats(region, match_id, kda)
+                all_info[match_id] = collapsed_table_info(player1, region, match_id)
         return render_template('search_result.html', title='search_result', player1=player1,
-                               player2=player2, region=region, all_info=all_info)
+                               player2=player2, region=region, data=all_info)
 
     return render_template('home.html')
 

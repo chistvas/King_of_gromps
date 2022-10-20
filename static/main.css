@@ -268,7 +268,7 @@
 }
 
 .result_table tbody tr{
-  border-bottom: 5px solid #d21212;
+  border-bottom: 2px solid #954343;
 }
 
 .result_table tbody tr:nth-of-type(even){

@@ -19,7 +19,7 @@ def my_timer(orig_func):
     return wrapper
 
 
-def two_players_search(player1_nickname, player2_nickname, region_name, count=2):
+def two_players_search(player1_nickname, player2_nickname, region_name, count=20):
     watcher = LolWatcher(key)
     player1 = watcher.summoner.by_name(region_name, player1_nickname)
     player2 = watcher.summoner.by_name(region_name, player2_nickname)

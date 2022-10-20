@@ -1,17 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 <table class="result_table">
+  <tr>
+      <th colspan="5">Recent Games</th>
+  </tr>
+  {% for game in data %}
     <tr>
-      <th>Month</th>
-      <th>Savings</th>
+      {% for keys in data[game] %}
+        <td>{{ data[game][keys] }}</td>
+      {% endfor %}
     </tr>
-    <tr>
-      <td>January</td>
-      <td>$100</td>
-    </tr>
-    <tr>
-      <td>February</td>
-      <td>$80</td>
-    </tr>
+  {% endfor %}
 </table>
 {% endblock content %}
