@@ -1,5 +1,5 @@
 from riotwatcher import LolWatcher
-
+import time
 
 key = "RGAPI-8ae0b12b-ca00-4aa2-9f98-a44b72c98753"
 kda = ["kills", "deaths", "assists"]
@@ -19,7 +19,7 @@ def my_timer(orig_func):
     return wrapper
 
 
-def two_players_search(player1_nickname, player2_nickname, region_name, count=20):
+def two_players_search(player1_nickname, player2_nickname, region_name, count=2):
     watcher = LolWatcher(key)
     player1 = watcher.summoner.by_name(region_name, player1_nickname)
     player2 = watcher.summoner.by_name(region_name, player2_nickname)
@@ -30,6 +30,7 @@ def two_players_search(player1_nickname, player2_nickname, region_name, count=20
         for player in match_info["metadata"]["participants"]:
             if player == player2["puuid"]:
                 games_together.append({match: player})
+        time.sleep(0.1)
     return games_together
 
 
@@ -81,29 +82,33 @@ def collapsed_table_info(player1, player2, region):
         for match_id in match:
             player1_stats = get_player_all_stats(match_id, region, player1_puuid)
             info = get_player_list_stats(player1_stats, table_stats)
-            info["kda"] = [player1_stats["kills"], player1_stats["deaths"], player1_stats["assists"]]
-            info["items"] = [player1_stats["item0"], player1_stats["item1"], player1_stats["item2"], player1_stats["item3"], player1_stats["item4"], player1_stats["item5"]]
+            if info["win"] == True:
+                info["win"] = "Victory"
+            else:
+                info["win"] = "Defeat"
+            info["kda"] = ", ".join([str(player1_stats["kills"]), str(player1_stats["deaths"]), str(player1_stats["assists"])])
+            info["items"] = ", ".join([str(player1_stats["item0"]), str(player1_stats["item1"]), str(player1_stats["item2"]), str(player1_stats["item3"]), str(player1_stats["item4"]), str(player1_stats["item5"])])
             enemys_list = []
             for participant in watcher.match.by_id(region, match_id)["metadata"]["participants"]:
                 enemys_list.append(watcher.summoner.by_puuid(region, participant)["name"])
-            info["enemys"] = enemys_list
+            info["enemys"] = ", ".join(enemys_list)
     return info
 
 
 
 if __name__ == "__main__":
     print("Script started")
+    t1 = time.time()
     watcher = LolWatcher(key)
     match_id2 = "EUW1_6101420783"
     puuid1 = "-Mv1lSgoxtGzZWIiEerb3xQMJ3BtBVvjjs1fgdD42G5Hlp7q2dGD3T1zs0kKodesY0bylrAbDKdfTQ"
-    region = "euw1"
-    player1 = "metalonot"
-    player2 = "Karini"
+    region = "RU"
+    player1 = "StePanzer"
+    player2 = "MrNoct"
     all_info = {}
     for match in two_players_search(player1, player2, region):
         for match_id in match:
             all_info[match_id] = collapsed_table_info(player1, player2, region)
     print(all_info)
-    for game in all_info:
-        for keys in all_info[game]:
-            print(keys)
+    t2 = time.time()
+    print(f"{t2-t1} seconds")

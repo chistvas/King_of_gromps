@@ -5,9 +5,11 @@
         <th colspan="5">Recent Games</th>
     </tr>
     {% for game in data %}
+      <tr>
         {% for keys in data[game] %}
           <td>{{ data[game][keys] }}</td>
         {% endfor %}
+      </tr>
     {% endfor %}
 </table>
 {% endblock content %}
