@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm
-from scripts_riotapi import two_players_search, get_all_players_list_stats
+from scripts_riotapi import two_players_search, get_all_players_list_stats, collapsed_table_info
 from scripts_riotapi import kda
 
 app = Flask(__name__)
@@ -58,7 +58,14 @@ def login():
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
-    return render_template('test.html')
+    region = "euw1"
+    player1 = "metalonot"
+    player2 = "Karini"
+    all_info = {}
+    for match in two_players_search(player1, player2, region):
+        for match_id in match:
+            all_info[match_id] = collapsed_table_info(player1, player2, region)
+    return render_template('test.html', data=all_info)
 
 # @app.route("/search_result", methods={'GET', 'POST'})
 # def search_result():
