@@ -20,9 +20,13 @@
   
   .logo {
     margin-right: 20px;
-
   }
   
+  .logo_image {
+    max-width:50px;
+    height:auto;
+  }
+
   .nav_center {
     margin: auto;
     width: 50%;
@@ -80,7 +84,7 @@
   }
 
   .container{
-    background-image: url(https://images4.alphacoders.com/600/600528.png);
+    background-image: url(/static/images/background_test.png);
     height: 1000px;
     width: 100%;
     padding: 5%;
