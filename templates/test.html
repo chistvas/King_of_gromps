@@ -6,10 +6,28 @@
     </tr>
     {% for game in data %}
       <tr>
-        {% for keys in data[game] %}
-          <td>{{ data[game][keys] }}</td>
-        {% endfor %}
+        <td>
+          {{ data[game]["championName"] }}
+        </td>
+        <td>
+          {{ data[game]["win"] }}
+        </td>
+        <td>
+          {{ data[game]["kda"] }}
+        </td>
+        <td>
+          {% for item in data[game]["items"] %}
+            <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/{{ item }}.png" class="img_item">
+          {% endfor %}
+        </td>
+        <td>
+          {{ data[game]["enemys"] }}
+        </td>
       </tr>
     {% endfor %}
 </table>
 {% endblock content %}
+<a class="full-cell" href="/match/ru/414064349#participant1">
+  <div class="display-block">
+      <img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Spirit Visage" tooltip-var="item-3065" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-3065-24 "><img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Plated Steelcaps" tooltip-var="item-3047" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-3047-24 "><img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Serylda's Grudge" tooltip-var="item-6694" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-6694-24 "><br><img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Black Cleaver" tooltip-var="item-3071" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-3071-24 "><img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Goredrinker" tooltip-var="item-6630" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-6630-24 "><img src="//lolg-cdn.porofessor.gg/img/s/fond_sprite.png?v=5" alt="Stealth Ward" tooltip-var="item-3340" tooltip-class="itemTooltip" height="24" width="24" class="requireTooltip item-3340-24 "><br>        </div>
+</a>
