@@ -58,13 +58,7 @@ def login():
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
-    region = "ru"
-    player1 = "StePanzer"
-    player2 = "MrNoct"
-    all_info = {}
-    for match in two_players_search(player1, player2, region):
-        for match_id in match:
-            all_info[match_id] = collapsed_table_info(player1, region, match_id)
+    all_info = {'RU_414064349': {'championName': 'Aatrox', 'win': 'Victory', 'kda': '13, 6, 11', 'items': [3065, 3047, 6694, 3071, 0, 6630], 'enemys': 'StePanzer, MrNoct, dogorad, LesbianFanboy, SirExtraSex, FLAWxxxLE55, ВкругуКретинов, Gmeer, Disciple, CYBERDEDOK'}}
     return render_template('test.html', data=all_info)
 
 # @app.route("/search_result", methods={'GET', 'POST'})

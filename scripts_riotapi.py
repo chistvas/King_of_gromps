@@ -87,7 +87,7 @@ def collapsed_table_info(player, region, match_id):
     else:
         info["win"] = "Defeat"
     info["kda"] = ", ".join([str(player1_stats["kills"]), str(player1_stats["deaths"]), str(player1_stats["assists"])])
-    info["items"] = ", ".join([str(player1_stats["item0"]), str(player1_stats["item1"]), str(player1_stats["item2"]), str(player1_stats["item3"]), str(player1_stats["item4"]), str(player1_stats["item5"])])
+    info["items"] = [player1_stats["item0"], player1_stats["item1"], player1_stats["item2"], player1_stats["item3"], player1_stats["item4"], player1_stats["item5"]]
     enemys_list = []
     for participant in watcher.match.by_id(region, match_id)["metadata"]["participants"]:
         enemys_list.append(watcher.summoner.by_puuid(region, participant)["name"])
