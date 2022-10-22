@@ -1,7 +1,7 @@
 from riotwatcher import LolWatcher
 import time
 
-key = "RGAPI-78d8d828-9c2c-46ae-a5af-e7a58ce8eea4"
+key = "RGAPI-db436253-8637-445a-98d1-d0e54646cff3"
 kda = ["kills", "deaths", "assists"]
 table_stats = ["championName", "win"]
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     match_id2 = "EUW1_6101420783"
     puuid1 = "-Mv1lSgoxtGzZWIiEerb3xQMJ3BtBVvjjs1fgdD42G5Hlp7q2dGD3T1zs0kKodesY0bylrAbDKdfTQ"
     region = "ru"
-    player1 = "StePanzer"
+    player1 = "Мусорный король"
     player2 = "LesbianFanboy"
     all_info = {}
     for match in two_players_search(player1, player2, region):
