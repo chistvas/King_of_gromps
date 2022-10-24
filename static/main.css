@@ -124,14 +124,6 @@
 
 /* submit form styles */
 
-/* body {
-  align-items: center;
-  background-color: #000;
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-} */
-
 .form {
   background-color: #15172b;
   border-radius: 20px;
@@ -299,11 +291,16 @@
 
 .champion_summoner_column {
   flex: 50%;
-  
+  min-width: 200px;
 }
 
 .participant li {
   list-style: none;
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 5px;
 }
 
 .participant li a:link, a:visited {

@@ -27,14 +27,28 @@
           <div class="champion_summoner_column">
             <ul class="participant">
               {% for participant in data[game]["left_side_prt"] %}
-                <li><a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a></li>
+                <li class="participant">
+                  <div style="position: relative;">
+                    <img src="static/images/item/1001.png" class="img_item">
+                  </div>
+                  <div>
+                    <a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a>
+                  </div>
+                </li>
               {% endfor %}
             </ul>
           </div>
           <div class="champion_summoner_column">
             <ul class="participant">
               {% for participant in data[game]["right_side_prt"] %}
-                <li><a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a></li>
+              <li class="participant">
+                <div style="position: relative;">
+                  <img src="static/images/item/1001.png" class="img_item">
+                </div>
+                <div>
+                  <a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a>
+                </div>
+              </li>
               {% endfor %}
             </ul>
           </div>
