@@ -306,6 +306,19 @@
   list-style: none;
 }
 
+.participant li a:link, a:visited {
+  text-decoration: none;
+  color: black;
+}
+  
+.participant li a:link:active, a:visited:active {
+  text-decoration: none;
+}
+
+.participant li a:link:hover {
+  text-decoration: underline;
+}
+
 /* item image styles */
 
 .img_item{
