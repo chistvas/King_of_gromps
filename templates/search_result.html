@@ -34,7 +34,7 @@
           <div class="champion_summoner_column">
             <ul class="participant">
               {% for participant in data[game]["right_side_prt"] %}
-                <li> {{ participant }}</li>
+                <li><a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}"> {{ participant }} </a></li>
               {% endfor %}
             </ul>
           </div>
