@@ -2,7 +2,7 @@
 {% block content %}
 <table class="result_table">
   <tr>
-      <th colspan="5">Recent Games</th>
+      <th colspan="5" style="font-size: 30px;">Recent Games</th>
   </tr>
   {% for game in data %}
     <tr>
@@ -29,7 +29,9 @@
               {% for participant in data[game]["left_side_prt"] %}
                 <li class="participant">
                   <div style="position: relative;">
-                    <img src="static/images/item/1001.png" class="img_item">
+                    <a class="img_item" style="vertical-align: sub" href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank">
+                      <img src="static/images/champion/{{data[game]['left_side_prt'][participant]}}.png" class="img_item">
+                    </a>
                   </div>
                   <div>
                     <a class="img_item" style="vertical-align: sub" href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a>
@@ -43,7 +45,9 @@
               {% for participant in data[game]["right_side_prt"] %}
               <li class="participant">
                 <div style="position: relative;">
-                  <img src="static/images/item/1001.png" class="img_item">
+                  <a class="img_item" style="vertical-align: sub" href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank">
+                    <img src="static/images/champion/{{data[game]['right_side_prt'][participant]}}.png" class="img_item">
+                  </a>
                 </div>
                 <div>
                   <a class="img_item" style="vertical-align: sub" href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}" target="_blank"> {{ participant }} </a>
