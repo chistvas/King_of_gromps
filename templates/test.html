@@ -16,12 +16,29 @@
           {{ data[game]["kda"] }}
         </td>
         <td>
-          {% for item in data[game]["items"] %}
-            <img src="static/images/item/{{ item }}.png" class="img_item">
-          {% endfor %}
+          <div class="item_box">
+            {% for item in data[game]["items"] %}
+              <img src="static/images/item/{{ item }}.png" class="img_item">
+            {% endfor %}
+          </div>
         </td>
         <td>
-          {{ data[game]["enemys"] }}
+          <div class="champion_summoner_container">
+            <div class="champion_summoner_column">
+              <ul class="participant">
+                {% for participant in data[game]["left_side_prt"] %}
+                  <li><a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}"> {{ participant }} </a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="champion_summoner_column">
+              <ul class="participant">
+                {% for participant in data[game]["right_side_prt"] %}
+                  <li> {{ participant }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
         </td>
       </tr>
     {% endfor %}

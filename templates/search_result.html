@@ -6,9 +6,40 @@
   </tr>
   {% for game in data %}
     <tr>
-      {% for keys in data[game] %}
-        <td>{{ data[game][keys] }}</td>
-      {% endfor %}
+      <td>
+        <img src="static/images/champion/{{ data[game]['championName'] }}.png" class="img_champ">
+      </td>
+      <td>
+        {{ data[game]["win"] }}
+      </td>
+      <td>
+        {{ data[game]["kda"] }}
+      </td>
+      <td>
+        <div class="item_box">
+          {% for item in data[game]["items"] %}
+            <img src="static/images/item/{{ item }}.png" class="img_item">
+          {% endfor %}
+        </div>
+      </td>
+      <td>
+        <div class="champion_summoner_container">
+          <div class="champion_summoner_column">
+            <ul class="participant">
+              {% for participant in data[game]["left_side_prt"] %}
+                <li><a href="https://www.leagueofgraphs.com/summoner/{{region}}/{{participant}}"> {{ participant }} </a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="champion_summoner_column">
+            <ul class="participant">
+              {% for participant in data[game]["right_side_prt"] %}
+                <li> {{ participant }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </td>
     </tr>
   {% endfor %}
 </table>

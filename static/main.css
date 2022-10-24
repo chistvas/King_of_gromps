@@ -287,6 +287,25 @@
   border-bottom: 5px solid #0088a9;
 }
 
+.item_box {
+  width: 100px;
+}
+
+/* participant styles */
+
+.champion_summoner_container {
+  display: flex;
+}
+
+.champion_summoner_column {
+  flex: 50%;
+  
+}
+
+.participant li {
+  list-style: none;
+}
+
 /* item image styles */
 
 .img_item{
