@@ -104,8 +104,8 @@ if __name__ == "__main__":
     match_id2 = "EUW1_6101420783"
     puuid1 = "-Mv1lSgoxtGzZWIiEerb3xQMJ3BtBVvjjs1fgdD42G5Hlp7q2dGD3T1zs0kKodesY0bylrAbDKdfTQ"
     region = "ru"
-    player1 = "Мусорный король"
-    player2 = "LesbianFanboy"
+    player1 = "Гений Вторсырья"
+    player2 = "Мусорный король"
     all_info = {}
     for match in two_players_search(player1, player2, region):
         for match_id in match:
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     print(all_info)
     t2 = time.time()
     print(f"{t2-t1} seconds")
-    for game in all_info:
-        print("/n")
-        for keys in all_info[game]:
-          print(all_info[game][keys])
+    # for game in all_info:
+    #     print("/n")
+    #     for keys in all_info[game]:
+    #       print(all_info[game][keys])
