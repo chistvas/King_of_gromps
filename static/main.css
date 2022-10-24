@@ -321,6 +321,7 @@
 .img_item{
   height: 24px;
   width: 24px;
+  margin: 1px;
 }
 
 .img_champ {
