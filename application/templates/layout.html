@@ -25,8 +25,8 @@
   <div class="bg-modal">
     <div class="modal-contents">
       <div class="close">+</div>
-      <form action="">
-          <textarea class="input_modal" rows = "5" cols = "60" name = "description">
+      <form action="{{ url_for('contact') }}" method = "POST">
+          <textarea class="input_modal" rows="5" cols="60" name="description" required="required">
             Enter details here...
           </textarea>
           <input class="cta_modal" type = "submit" value = "Submit">

@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SECRET_KEY'] = '395f645c16a60709237dd22e9845ec41'
 db = SQLAlchemy(app)
 
 from application import routes

@@ -8,4 +8,4 @@ class Contact(db.Model):
     problem = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
-        return f"User('{self.webpage}', '{self.submit_time}', '{self.problem}'"
+        return f"Data('{self.webpage}', '{self.submit_time}', '{self.problem}'"
