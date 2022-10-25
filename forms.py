@@ -21,3 +21,9 @@ class LoginForm(FlaskForm):
 class SearchForm(FlaskForm):
     searched = StringField('Searched', validators=[DataRequired()])
     submit = SubmitField('Search')
+
+
+class ContactForm(FlaskForm):
+    webpage = StringField('Webpage', validators=[DataRequired()])
+    problem = StringField('Problem', validators=[DataRequired()])
+    submit_time = StringField('Datetime', validators=[DataRequired()])
