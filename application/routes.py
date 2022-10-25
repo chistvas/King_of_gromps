@@ -1,22 +1,7 @@
-from datetime import datetime
-from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, ContactForm
-from flask_sqlalchemy import SQLAlchemy
-from scripts_riotapi import two_players_search, collapsed_table_info
-from scripts_riotapi import kda
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
-
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    webpage = db.Column(db.String, nullable=False)
-    submit_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-    problem = db.Column(db.Text, nullable=False)
-
-    def __repr__(self):
-        return f"User('{self.webpage}', '{self.submit_time}', '{self.problem}'"
+from flask import render_template, url_for, flash, redirect, request
+from application import app
+from application.scripts_riotapi import two_players_search, collapsed_table_info
+from application.forms import RegistrationForm, LoginForm
 
 
 @app.route("/search_result", methods=['POST', 'GET'])
@@ -85,6 +70,3 @@ def test():
     return render_template('test.html', data=all_info, region=region)
 
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
