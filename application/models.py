@@ -1,5 +1,4 @@
 from datetime import datetime
-from sqlalchemy import column
 from application import db
 
 class Contact(db.Model):

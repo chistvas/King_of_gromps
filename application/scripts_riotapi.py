@@ -176,19 +176,3 @@ if __name__ == "__main__":
     player1 = "StePanzer"
     player2 = "MrNoct"
     proplayers_into_db()
-    # all_info = {}
-    # gamedata = watcher.match.by_id(region, match_id2)
-    # print(gamedata)
-
-    # info_two_players_search = two_players_search(player1, player2, region)
-    # time_api = 0
-    # tstart = time.time()
-    # for match in info_two_players_search:
-    #     for match_id in match:
-    #         t2 = time.time()
-    #         info_collapsed_table_info = collapsed_table_info(player1, region, match_id)
-    #         time_api += time.time() - t2
-    #         print(time_api)
-    #         all_info[match_id] = info_collapsed_table_info
-    # tend = time.time() - tstart - time_api
-    # print(all_info, tend)
