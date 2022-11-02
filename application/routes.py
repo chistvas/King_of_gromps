@@ -8,12 +8,11 @@ from application.forms import RegistrationForm, LoginForm, ContactForm
 
 @app.route("/contact", methods=['POST', 'GET'])
 def contact():
-    contact = Contact(webpage=request.full_path, problem=request.form.get('description'), submit_time=datetime.utcnow())
+    contact = Contact(webpage=request.full_path, description=request.form.get('description'), submit_time=datetime.utcnow())
     db.session.add(contact)
     db.session.commit()
     flash('Your message has been sent', "success")
     return redirect(url_for("home"))
-    # return redirect(url_for("home"))
 
 
 @app.route("/search_result", methods=['POST', 'GET'])

@@ -1,7 +1,11 @@
 from riotwatcher import LolWatcher
 import time
+from application.models import Summoner, Game, Proplayers
+from application import db
+import mwclient
+import json
 
-key = "RGAPI-59686a90-f6cc-41b6-9632-12b63ed22c39"
+key = "RGAPI-82ff421b-4838-4326-9fb0-8e7a87df3932"
 kda = ["kills", "deaths", "assists"]
 table_stats = ["championName", "win"]
 
@@ -74,7 +78,6 @@ def get_all_players_list_stats(region_name, match_id, list_stats):
         all_player_stats[watcher.summoner.by_puuid(region_name, match_info["info"]["participants"][i]["puuid"])["name"]] = stats
     return all_player_stats
 
-
 def collapsed_table_info(player, region, match_id):
     watcher = LolWatcher(key)
     player_puuid = watcher.summoner.by_name(region, player)["puuid"]
@@ -92,16 +95,88 @@ def collapsed_table_info(player, region, match_id):
     i=0
     gamedata = watcher.match.by_id(region, match_id)
     for participant in gamedata["metadata"]["participants"]:
-        name = watcher.summoner.by_puuid(region, participant)["name"]
-        if i <= 4:
-            left_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
+        summoner_in_db = Summoner.query.filter_by(puuid=participant).first()
+        if summoner_in_db is not None:
+            name = summoner_in_db.nickname
+            if i <= 4:
+                left_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
+            else:
+                right_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
         else:
-            right_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
+            name = watcher.summoner.by_puuid(region, participant)["name"]
+            new_summoner = Summoner(puuid=participant, nickname=name)
+            db.session.add(new_summoner)
+            game_in_db = Game.query.filter_by(game_id=match_id).first()
+            if game_in_db is not None:
+                new_summoner.games.append(game_in_db)
+            else:
+                new_summoner.games.append(Game(game_id=match_id))
+            db.session.commit()
+            if i <= 4:
+                left_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
+            else:
+                right_side_prt[name] = gamedata["info"]["participants"][i]["championName"]
         time.sleep(0.1)
         i += 1
     info["left_side_prt"] = left_side_prt
     info["right_side_prt"] = right_side_prt
     return info
+
+def crawling_data(region):
+    watcher = LolWatcher(key)
+    i=1
+    summoner = Summoner.query.filter_by(id=i).first()
+    puuid = summoner.puuid
+    print(puuid)
+    while i < 100000:
+        match_list = watcher.match.matchlist_by_puuid(region, puuid)
+        for match in match_list:
+            match_info = watcher.match.by_id(region, match)
+            for participant in match_info["metadata"]["participants"]:
+                summoner_in_db = Summoner.query.filter_by(puuid=participant).first()
+                if summoner_in_db is None:
+                    name = watcher.summoner.by_puuid(region, participant)["name"]
+                    new_summoner = Summoner(puuid=participant, nickname=name)
+                    db.session.add(new_summoner)
+                    game_in_db = Game.query.filter_by(game_id=match).first()
+                    if game_in_db is not None:
+                        new_summoner.games.append(game_in_db)
+                    else:
+                        new_summoner.games.append(Game(game_id=match))
+                    db.session.commit()
+        i += 1
+        summoner = Summoner.query.filter_by(id=i).first()
+        puuid = summoner.puuid
+        print(puuid)       
+    return print('End of crawling data')
+
+def proplayers():
+    site = mwclient.Site('lol.fandom.com', path='/')
+    response = site.api('cargoquery', limit = 'max', tables = "Players", fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired")
+    parsed = json.dumps(response)
+    decoded = json.loads(parsed)
+    return decoded
+
+def proplayers_into_db():
+    site = mwclient.Site('lol.fandom.com', path='/')
+    response = site.api('cargoquery', limit = 'max', tables = "Players", fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired")
+    parsed = json.dumps(response)
+    decoded = json.loads(parsed)
+    for player in decoded["cargoquery"]:
+        new_player = Proplayers(
+            player=player["Player"], 
+            name=player["Name"], 
+            age=player["Age"], 
+            team=player["Team"], 
+            role=player["Role"], 
+            soloqueueids=player["SoloqueueIds"], 
+            isretired=player["IsRetired"]
+        )
+        db.session.add(new_player)
+        db.session.commit()
+        return print('end')
+
+
 
 
 
@@ -113,9 +188,10 @@ if __name__ == "__main__":
     region = "ru"
     player1 = "StePanzer"
     player2 = "MrNoct"
-    all_info = {}
-    gamedata = watcher.match.by_id(region, match_id2)
-    print(gamedata)
+    proplayers_into_db()
+    # all_info = {}
+    # gamedata = watcher.match.by_id(region, match_id2)
+    # print(gamedata)
 
     # info_two_players_search = two_players_search(player1, player2, region)
     # time_api = 0
