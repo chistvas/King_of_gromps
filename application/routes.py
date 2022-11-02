@@ -3,7 +3,7 @@ from flask import render_template, url_for, flash, redirect, request
 from application import app, db
 from application.models import Contact
 from application.scripts_riotapi import two_players_search, collapsed_table_info
-from application.forms import RegistrationForm, LoginForm, ContactForm
+from application.forms import RegistrationForm, LoginForm
 
 
 @app.route("/contact", methods=['POST', 'GET'])

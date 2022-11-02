@@ -70,7 +70,7 @@ def collapsed_table_info(player, region, match_id):
     player_puuid = watcher.summoner.by_name(region, player)["puuid"]
     player1_stats = get_player_all_stats(match_id, region, player_puuid)
     info = get_player_list_stats(player1_stats, table_stats)
-    if info["win"] == True:
+    if info["win"]:
         info["win"] = "Victory"
     else:
         info["win"] = "Defeat"
