@@ -43,8 +43,8 @@ def proplayers_into_db(where):
 
 if __name__ == "__main__":
     app.app_context().push()
-    for id in range(0, 15000, 500):
+    for id in range(0, 20000, 500):
         where = f"id >= {id}"
         print(id, where)
         proplayers_into_db(where)
-        time.sleep(5)
+        time.sleep(120)

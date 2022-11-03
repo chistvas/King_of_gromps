@@ -5,7 +5,7 @@ from application import db
 import mwclient
 import json
 
-key = "RGAPI-82ff421b-4838-4326-9fb0-8e7a87df3932"
+key = "RGAPI-d8e38d41-b005-4be0-85d1-a29cbf1b0d31"
 kda = ["kills", "deaths", "assists"]
 table_stats = ["championName", "win"]
 

@@ -64,6 +64,13 @@ def login():
             flash('Invalid username or password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
+@app.route("/pro_search")
+def pro_search():
+    return render_template('prosearch.html')
+
+@app.route("/pro_search_result")
+def pro_search_result():
+    return render_template('pro_search_result.html')
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
