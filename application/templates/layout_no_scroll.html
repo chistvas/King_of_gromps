@@ -11,10 +11,15 @@
   {% else %}
     <title>Test site</title>
   {% endif %}
+
 </head>
-<body scroll="no" style="overflow: hidden">
+<body scroll="no" style="overflow: hidden" onload="document.body.style.opacity='1'">
   <header>
-    <a class="logo" href="/"><img class="logo_image" src="/static/images/test_logo.png" alt="logo"></a>
+    {% if title == "Search Pro" or title == "Search Pro Result" %}
+      <a class="cta" href="{{url_for('search')}}">Two players</a>
+    {% else %}
+      <a class="cta" href="{{url_for('pro_search')}}">Pro player</a>
+    {% endif %}
     <h1 class="nav_center">King of Gromps</h1>
     <a class="cta" id="contact" href="#">Contact Me!</a>
   </header>
