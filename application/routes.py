@@ -12,7 +12,7 @@ def contact():
     db.session.add(contact)
     db.session.commit()
     flash('Your message has been sent', "success")
-    return redirect(url_for("home"))
+    return redirect(url_for("search"))
 
 
 @app.route("/search_result", methods=['POST', 'GET'])
@@ -27,50 +27,51 @@ def search_result():
         for match in two_players_search(player1, player2, region):
             for match_id in match:
                 all_info[match_id] = collapsed_table_info(player1, region, match_id)
-        return render_template('search_result.html', title='search_result', player1=player1,
+        return render_template('search_result.html', title='Search result', player1=player1,
                                player2=player2, region=region, data=all_info)
 
-    return render_template('home.html')
+    return render_template('search.html')
 
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
-def home():
-    return render_template('home.html')
+@app.route("/search_two_players", methods=['GET', 'POST'])
+def search():
+    return render_template('search.html', title='Search two players')
 
 
 @app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template('about.html', title='About')
 
 
-@app.route("/register", methods={'GET', 'POST'})
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
+# @app.route("/register", methods={'GET', 'POST'})
+# def register():
+#     form = RegistrationForm()
+#     if form.validate_on_submit():
+#         flash(f'Account created for {form.username.data}!', 'success')
+#         return redirect(url_for('search'))
+#     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/login", methods={'GET', 'POST'})
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'admin@gromps.com' and form.password.data == 'password':
-            flash('You have been logged in as admin!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Invalid username or password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+# @app.route("/login", methods={'GET', 'POST'})
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         if form.email.data == 'admin@gromps.com' and form.password.data == 'password':
+#             flash('You have been logged in as admin!', 'success')
+#             return redirect(url_for('search'))
+#         else:
+#             flash('Invalid username or password', 'danger')
+#     return render_template('login.html', title='Login', form=form)
 
 @app.route("/pro_search")
 def pro_search():
-    return render_template('prosearch.html')
+    return render_template('prosearch.html', title='Search Pro')
 
 @app.route("/pro_search_result")
 def pro_search_result():
-    return render_template('pro_search_result.html')
+    return render_template('pro_search_result.html', title="Search Pro Result")
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
