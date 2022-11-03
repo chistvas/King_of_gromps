@@ -352,6 +352,10 @@
   justify-content: center;
   align-items: center;
 }
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
 .modal-contents {
   height: 300px;
   width: 500px;
