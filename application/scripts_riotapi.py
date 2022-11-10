@@ -1,17 +1,18 @@
-from riotwatcher import LolWatcher
-import time
-from application import db
-from application.models import Summoner, Game, Proplayers
 import mwclient
 import json
+import time
+from riotwatcher import LolWatcher
+from application import db
+from application.models import Summoner, Game, Proplayers
 
-key = "RGAPI-49d594ce-ec25-4351-8ed3-764a452d17e1"
-kda = ["kills", "deaths", "assists"]
-table_stats = ["championName", "win"]
-pro_player_list = []
+KEY = "RGAPI-49d594ce-ec25-4351-8ed3-764a452d17e1"
+KDA = ["kills", "deaths", "assists"]
+TABLE_STATS = ["championName", "win"]
+PRO_PLAYER_LIST = []
+
 
 def two_players_search(player1_nickname, player2_nickname, region_name, count=20):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     player1 = watcher.summoner.by_name(region_name, player1_nickname)
     player2 = watcher.summoner.by_name(region_name, player2_nickname)
     match_list = watcher.match.matchlist_by_puuid(region_name, player1["puuid"], count=count)
@@ -24,8 +25,9 @@ def two_players_search(player1_nickname, player2_nickname, region_name, count=20
         time.sleep(0.1)
     return games_together
 
+
 def pro_player_search(player_nickname, region_name, count=20):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     summoner_in_db = Summoner.query.filter_by(nickname=player_nickname).first()
     if summoner_in_db is None:
         player1 = watcher.summoner.by_name(region_name, player_nickname)
@@ -43,14 +45,15 @@ def pro_player_search(player_nickname, region_name, count=20):
         time.sleep(0.1)
     return games_together
 
+
 def get_match_info(match_id, region_name):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     match_info = watcher.match.by_id(region_name, match_id)
     return match_info
 
 
 def get_player_all_stats(match_id, region_name, player_puuid):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     match_info = watcher.match.by_id(region_name, match_id)
     for i in range(10):
         if match_info["info"]["participants"][i]["puuid"] == player_puuid:
@@ -66,15 +69,15 @@ def get_player_list_stats(player_stats, list_stats):
 
 
 def get_players_kda_from_scratch(player_name, region_name, match_id):
-    watcher = LolWatcher(key)
-    kda = ["kills", "deaths", "assists"]
+    watcher = LolWatcher(KEY)
+    KDA = ["kills", "deaths", "assists"]
     player_puuid = watcher.summoner.by_name(region_name, player_name)
     player_stats = get_player_all_stats(match_id, region_name, player_puuid)
-    return get_player_list_stats(player_stats, kda)
+    return get_player_list_stats(player_stats, KDA)
 
 
 def get_all_players_list_stats(region_name, match_id, list_stats):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     all_player_stats = {}
     match_info = watcher.match.by_id(region_name, match_id)
     for i in range(10):
@@ -83,17 +86,29 @@ def get_all_players_list_stats(region_name, match_id, list_stats):
         all_player_stats[watcher.summoner.by_puuid(region_name, match_info["info"]["participants"][i]["puuid"])["name"]] = stats
     return all_player_stats
 
+
 def collapsed_table_info(player, region, match_id):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     player_puuid = watcher.summoner.by_name(region, player)["puuid"]
     player1_stats, gamedata = get_player_all_stats(match_id, region, player_puuid)
-    info = get_player_list_stats(player1_stats, table_stats)
+    info = get_player_list_stats(player1_stats, TABLE_STATS)
     if info["win"]:
         info["win"] = "Victory"
     else:
         info["win"] = "Defeat"
-    info["kda"] = ", ".join([str(player1_stats["kills"]), str(player1_stats["deaths"]), str(player1_stats["assists"])])
-    info["items"] = [player1_stats["item0"], player1_stats["item1"], player1_stats["item2"], player1_stats["item3"], player1_stats["item4"], player1_stats["item5"]]
+    info["kda"] = ", ".join([
+        str(player1_stats["kills"]),
+        str(player1_stats["deaths"]),
+        str(player1_stats["assists"])
+        ])
+    info["items"] = [
+        player1_stats["item0"],
+        player1_stats["item1"],
+        player1_stats["item2"],
+        player1_stats["item3"],
+        player1_stats["item4"],
+        player1_stats["item5"]
+        ]
     info["items"][:] = (item for item in info["items"] if item != 0)
     left_side_prt = {}
     right_side_prt = {}
@@ -126,8 +141,9 @@ def collapsed_table_info(player, region, match_id):
     info["right_side_prt"] = right_side_prt
     return info
 
+
 def crawling_data(region):
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     i=1
     summoner = Summoner.query.filter_by(id=i).first()
     puuid = summoner.puuid
@@ -154,6 +170,7 @@ def crawling_data(region):
         print(puuid, i)       
     return print('End of crawling data')
 
+
 def proplayers():
     site = mwclient.Site('lol.fandom.com', path='/')
     response = site.api(
@@ -165,6 +182,7 @@ def proplayers():
     parsed = json.dumps(response)
     decoded = json.loads(parsed)
     return decoded
+
 
 def proplayers_into_db():
     site = mwclient.Site('lol.fandom.com', path='/')
@@ -191,10 +209,9 @@ def proplayers_into_db():
         return print('end')
 
 
-
 if __name__ == "__main__":
     print("Script started")
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     match_id2 = "EUW1_6101420783"
     puuid1 = "-Mv1lSgoxtGzZWIiEerb3xQMJ3BtBVvjjs1fgdD42G5Hlp7q2dGD3T1zs0kKodesY0bylrAbDKdfTQ"
     region = "ru"

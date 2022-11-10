@@ -50,7 +50,7 @@ class Proplayers(db.Model):
     def __repr__(self):
         return f"Proplayers('{self.Player}')"
 
-class Summoner_ru(db.Model):
+class SummonerRu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     puuid = db.Column(db.String(30), nullable=False)
     nickname = db.Column(db.String(50), nullable=False)
@@ -59,7 +59,7 @@ class Summoner_ru(db.Model):
     def __repr__(self):
         return f"Summoner('{self.puuid}')"
 
-class Game_ru(db.Model):
+class GameRu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.String(30), nullable=False)
 
