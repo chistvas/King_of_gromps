@@ -71,6 +71,20 @@ def pro_search():
 
 @app.route("/pro_search_result")
 def pro_search_result():
+    if request.method == 'GET':
+        return f"The URL /pro_search_result is accessed directly. Try going to '/pro_search' to submit form"
+    if request.method == "POST":
+        player1 = request.form.get("player1")
+
+        region = request.form.get("region")
+        all_info = {}
+        for match in two_players_search(player1, player2, region):
+            for match_id in match:
+                all_info[match_id] = collapsed_table_info(player1, region, match_id)
+        return render_template('search_result.html', title='Search result', player1=player1,
+                               player2=player2, region=region, data=all_info)
+
+    return render_template('search.html')
     return render_template('pro_search_result.html', title="Search Pro Result")
 
 @app.route("/test", methods=['GET', 'POST'])

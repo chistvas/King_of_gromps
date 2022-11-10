@@ -1,14 +1,14 @@
 from riotwatcher import LolWatcher
 import time
-from application.models import Summoner, Game, Proplayers
 from application import db
+from application.models import Summoner, Game, Proplayers
 import mwclient
 import json
 
-key = "RGAPI-d8e38d41-b005-4be0-85d1-a29cbf1b0d31"
+key = "RGAPI-49d594ce-ec25-4351-8ed3-764a452d17e1"
 kda = ["kills", "deaths", "assists"]
 table_stats = ["championName", "win"]
-
+pro_player_list = []
 
 def two_players_search(player1_nickname, player2_nickname, region_name, count=20):
     watcher = LolWatcher(key)
@@ -24,6 +24,24 @@ def two_players_search(player1_nickname, player2_nickname, region_name, count=20
         time.sleep(0.1)
     return games_together
 
+def pro_player_search(player_nickname, region_name, count=20):
+    watcher = LolWatcher(key)
+    summoner_in_db = Summoner.query.filter_by(nickname=player_nickname).first()
+    if summoner_in_db is None:
+        player1 = watcher.summoner.by_name(region_name, player_nickname)
+        match_list = watcher.match.matchlist_by_puuid(region_name, player1["puuid"], count=count)
+    else:
+        player1 = summoner_in_db.puuid
+        match_list = watcher.match.matchlist_by_puuid(region_name, player1, count=count)
+    games_together = []
+    for match in match_list:
+        match_info = watcher.match.by_id(region_name, match)
+        for player in match_info["metadata"]["participants"]:
+            for pro_player in pro_player_list:
+                if player == pro_player:
+                    games_together.append({match: player})
+        time.sleep(0.1)
+    return games_together
 
 def get_match_info(match_id, region_name):
     watcher = LolWatcher(key)
@@ -37,7 +55,7 @@ def get_player_all_stats(match_id, region_name, player_puuid):
     for i in range(10):
         if match_info["info"]["participants"][i]["puuid"] == player_puuid:
             player_info = match_info["info"]["participants"][i]
-            return player_info
+            return [player_info, match_info]
 
 
 def get_player_list_stats(player_stats, list_stats):
@@ -68,7 +86,7 @@ def get_all_players_list_stats(region_name, match_id, list_stats):
 def collapsed_table_info(player, region, match_id):
     watcher = LolWatcher(key)
     player_puuid = watcher.summoner.by_name(region, player)["puuid"]
-    player1_stats = get_player_all_stats(match_id, region, player_puuid)
+    player1_stats, gamedata = get_player_all_stats(match_id, region, player_puuid)
     info = get_player_list_stats(player1_stats, table_stats)
     if info["win"]:
         info["win"] = "Victory"
@@ -80,7 +98,6 @@ def collapsed_table_info(player, region, match_id):
     left_side_prt = {}
     right_side_prt = {}
     i=0
-    gamedata = watcher.match.by_id(region, match_id)
     for participant in gamedata["metadata"]["participants"]:
         summoner_in_db = Summoner.query.filter_by(puuid=participant).first()
         if summoner_in_db is not None:
@@ -134,19 +151,29 @@ def crawling_data(region):
         i += 1
         summoner = Summoner.query.filter_by(id=i).first()
         puuid = summoner.puuid
-        print(puuid)       
+        print(puuid, i)       
     return print('End of crawling data')
 
 def proplayers():
     site = mwclient.Site('lol.fandom.com', path='/')
-    response = site.api('cargoquery', limit = 'max', tables = "Players", fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired")
+    response = site.api(
+        'cargoquery', 
+        limit = 'max', 
+        tables = "Players", 
+        fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired",
+        where="SoloqueueIds IS NOT NULL")
     parsed = json.dumps(response)
     decoded = json.loads(parsed)
     return decoded
 
 def proplayers_into_db():
     site = mwclient.Site('lol.fandom.com', path='/')
-    response = site.api('cargoquery', limit = 'max', tables = "Players", fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired")
+    response = site.api(
+        'cargoquery', 
+        limit = 'max', 
+        tables = "Players", 
+        fields="Player, Name, Age, Team, Role, SoloqueueIds, IsRetired",
+        where="SoloqueueIds IS NOT NULL")
     parsed = json.dumps(response)
     decoded = json.loads(parsed)
     for player in decoded["cargoquery"]:
@@ -165,8 +192,6 @@ def proplayers_into_db():
 
 
 
-
-
 if __name__ == "__main__":
     print("Script started")
     watcher = LolWatcher(key)
@@ -175,4 +200,4 @@ if __name__ == "__main__":
     region = "ru"
     player1 = "StePanzer"
     player2 = "MrNoct"
-    proplayers_into_db()
+    print(proplayers())
