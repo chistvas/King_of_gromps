@@ -210,11 +210,12 @@ def proplayers_into_db():
 
 if __name__ == "__main__":
     print("Script started")
-    watcher = LolWatcher(key)
+    watcher = LolWatcher(KEY)
     match_id2 = "EUW1_6101420783"
     puuid1 = "A5GXIOsZv-IcgQIrrvKaASxeFw_RxVDLA1MW1PrNW-64iyW9fZtrzhfaxk4cyf-6LAuaKsA7oe7ipg"
     region = "ru"
     player1 = "StePanzer"
     player2 = "MrNoct"
     with app.app_context():
+        db.create_all()
         crawling_data("ru")
