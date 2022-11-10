@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="static\main.css">
-</head>
-<body>
-    <img src="static/images/item3065.png">      
-    <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/3047.png">      
-    <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/3047.png">      
-    <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/3071.png">      
-    <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/0.png">      
-    <img src="http://ddragon.leagueoflegends.com/cdn/12.20.1/img/item/6630.png">
-</body>
-</html>
+# @app.route("/register", methods={'GET', 'POST'})
+# def register():
+#     form = RegistrationForm()
+#     if form.validate_on_submit():
+#         flash(f'Account created for {form.username.data}!', 'success')
+#         return redirect(url_for('search'))
+#     return render_template('register.html', title='Register', form=form)
+
+
+# @app.route("/login", methods={'GET', 'POST'})
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         if form.email.data == 'admin@gromps.com' and form.password.data == 'password':
+#             flash('You have been logged in as admin!', 'success')
+#             return redirect(url_for('search'))
+#         else:
+#             flash('Invalid username or password', 'danger')
+#     return render_template('login.html', title='Login', form=form)
